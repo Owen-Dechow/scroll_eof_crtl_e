@@ -1,4 +1,4 @@
-# scroll_eof_crtl_e
+# scroll_eof_ctrl_e
 
 Based on [Aasim-A/scrollEOF.nvim](https://github.com/Aasim-A/scrollEOF.nvim/tree/master)
 
