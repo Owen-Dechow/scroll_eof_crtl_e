@@ -12,23 +12,19 @@ Lazy
 ```lua
 return {
      "Owen-Dechow/scroll_eof_ctrl_e",
-    config = function()
-       require("scroll_eof").setup()
-    end
+     opts = {
+        -- scrolloff = nil
+        -- -- Set default scrolloff for
+        --    vim.opt.scrolloff. If the
+        --    value is nil or false, the
+        --    the scrolloff will not be
+        --    set or overwritten.
+     }
 }
 ```
 
-Packer
-```lua
-use("Owen-Dechow/scroll_eof_crtl_e")
-```
-
-Vim-Plug
-```lua
-Plug "Owen-Dechow/scroll_eof_crtl_e"
-```
-
-***YOU MUST RUN THE SETUP FUNCTION OTHERWISE THE PLUGIN WILL NOT WORK***
-```lua
-require("scroll_eof").setup()
-```
+> [!NOTE]
+> Unless you include the opts option in lazy then the plugin will not set up.
+> If you are using a different plugin manager the system will word as soon as
+> the plugin is required. You do not need to explicitly run the `setup`
+> function. The setup function only deals with opts.

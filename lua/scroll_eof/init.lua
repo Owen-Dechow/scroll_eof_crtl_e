@@ -1,9 +1,13 @@
 ---@diagnostic disable: undefined-global
 
-local M = {}
+local M = {
+    config = {
+        scrolloff = nil
+    }
+}
 
-local ctrl_e = vim.api.nvim_replace_termcodes("<C-e>", true, false, true);
-local ctrl_o = vim.api.nvim_replace_termcodes("<C-o>", true, false, true);
+local ctrl_e = vim.api.nvim_replace_termcodes("<C-e>", true, false, true)
+local ctrl_o = vim.api.nvim_replace_termcodes("<C-o>", true, false, true)
 
 local last_cursor
 
@@ -44,31 +48,40 @@ M.scroll = function(override_o)
     end
 end
 
-
-M.setup = function()
-    vim.api.nvim_create_autocmd({ "CursorMoved", "WinScrolled", }, {
-        callback = function()
-            if vim.api.nvim_buf_get_option(0, "modifiable") then
-                M.scroll(false)
-            end
+vim.api.nvim_create_autocmd({ "CursorMoved", "WinScrolled", }, {
+    callback = function()
+        if vim.api.nvim_buf_get_option(0, "modifiable") then
+            M.scroll(false)
         end
-    })
+    end
+})
 
-    vim.api.nvim_create_autocmd("CursorMovedI", {
-        callback = function()
-            if vim.api.nvim_buf_get_option(0, "modifiable") then
-                M.scroll(true)
-            end
+vim.api.nvim_create_autocmd("CursorMovedI", {
+    callback = function()
+        if vim.api.nvim_buf_get_option(0, "modifiable") then
+            M.scroll(true)
         end
-    })
+    end
+})
 
-    vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function()
-            if vim.api.nvim_buf_get_option(0, "modifiable") then
-                last_cursor = vim.api.nvim_win_get_cursor(0)[1]
-            end
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        if vim.api.nvim_buf_get_option(0, "modifiable") then
+            last_cursor = vim.api.nvim_win_get_cursor(0)[1]
         end
-    })
+    end
+})
+
+M.setup = function(opts)
+    if opts then
+        for key, val in pairs(opts) do
+            M.config[key] = val
+        end
+
+        if vim.opt.scrolloff then
+            vim.opt.scrolloff = M.config.scrolloff
+        end
+    end
 end
 
 return M
